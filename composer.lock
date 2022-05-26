@@ -472,7 +472,7 @@
                 "doctrine/orm": "^2.6",
                 "php-coveralls/php-coveralls": "^2.1",
                 "phpunit/phpunit": "7.0",
-                "symfony/cache": "^3.4|^4.1",
+                "symfony/cache": "4.3.8",
                 "symfony/phpunit-bridge": "^4.2",
                 "symfony/property-info": "^3.4|^4.1",
                 "symfony/validator": "^3.4|^4.1",
@@ -2112,7 +2112,7 @@
         },
         {
             "name": "symfony/cache",
-            "version": "v4.3.2",
+            "version": "v4.3.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/cache.git",
@@ -2805,7 +2805,7 @@
             },
             "require": {
                 "php": "^7.1.3",
-                "symfony/cache": "~3.4|~4.0",
+                "symfony/cache": "4.3.8",
                 "symfony/service-contracts": "^1.1"
             },
             "type": "library",
@@ -3089,7 +3089,7 @@
             "require": {
                 "ext-xml": "*",
                 "php": "^7.1.3",
-                "symfony/cache": "~4.3",
+                "symfony/cache": "4.3.8",
                 "symfony/config": "~4.2",
                 "symfony/dependency-injection": "^4.3",
                 "symfony/filesystem": "~3.4|~4.0",
@@ -4144,7 +4144,7 @@
                 "symfony/inflector": "~3.4|~4.0"
             },
             "require-dev": {
-                "symfony/cache": "~3.4|~4.0"
+                "symfony/cache": "4.3.8"
             },
             "suggest": {
                 "psr/cache-implementation": "To cache access methods."
@@ -5065,7 +5065,7 @@
                 "doctrine/annotations": "~1.0",
                 "doctrine/cache": "~1.0",
                 "egulias/email-validator": "^1.2.8|~2.0",
-                "symfony/cache": "~3.4|~4.0",
+                "symfony/cache": "4.3.8",
                 "symfony/config": "~3.4|~4.0",
                 "symfony/dependency-injection": "~3.4|~4.0",
                 "symfony/expression-language": "~3.4|~4.0",
