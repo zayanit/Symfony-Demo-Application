@@ -75,17 +75,17 @@ class CheckRequirementsSubscriber implements EventSubscriberInterface
      */
     public function handleKernelException(ExceptionEvent $event): void
     {
-        $exception = $event->getException();
+        $throwable = $event->getThrowable();
         // Since any exception thrown during a Twig template rendering is wrapped
         // in a Twig_Error_Runtime, we must get the original exception.
-        $previousException = $exception->getPrevious();
+        $previousThrowable = $throwable->getPrevious();
 
         // Driver exception may happen in controller or in twig template rendering
-        $isDriverException = ($exception instanceof DriverException || $previousException instanceof DriverException);
+        $isDriverException = ($throwable instanceof DriverException || $previousThrowable instanceof DriverException);
 
         // Check if SQLite is enabled
         if ($isDriverException && $this->isSQLitePlatform() && !\extension_loaded('sqlite3')) {
-            $event->setException(new \Exception('PHP extension "sqlite3" must be enabled because, by default, the Symfony Demo application uses SQLite to store its information.'));
+            $event->setThrowable(new \Exception('PHP extension "sqlite3" must be enabled because, by default, the Symfony Demo application uses SQLite to store its information.'));
         }
     }
 

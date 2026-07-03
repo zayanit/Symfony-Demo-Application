@@ -1,6 +1,7 @@
 framework:
     secret: '%env(APP_SECRET)%'
     csrf_protection: true
+    handle_all_throwables: true
     http_method_override: true
     trusted_hosts: ~
     session:
@@ -29,4 +30,4 @@ framework:
     ide: ~
     validation:
         email_validation_mode: 'html5'
-        enable_annotations: true
+        enable_attributes: true
