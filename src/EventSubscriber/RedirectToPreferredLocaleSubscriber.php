@@ -31,7 +31,7 @@ class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterface
     private $locales;
     private $defaultLocale;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, string $locales, string $defaultLocale = null)
+    public function __construct(UrlGeneratorInterface $urlGenerator, string $locales, ?string $defaultLocale = null)
     {
         $this->urlGenerator = $urlGenerator;
 
@@ -65,7 +65,7 @@ class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterface
         $request = $event->getRequest();
 
         // Ignore sub-requests and all URLs but the homepage
-        if (!$event->isMasterRequest() || '/' !== $request->getPathInfo()) {
+        if (!$event->isMainRequest() || '/' !== $request->getPathInfo()) {
             return;
         }
         // Ignore requests from referrers with the same HTTP host in order to prevent

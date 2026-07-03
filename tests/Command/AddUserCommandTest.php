@@ -26,7 +26,7 @@ class AddUserCommandTest extends KernelTestCase
         'full-name' => 'Chuck Norris',
     ];
 
-    protected function setUp()
+    protected function setUp(): void
     {
         exec('stty 2>&1', $output, $exitcode);
         $isSttySupported = 0 === $exitcode;
@@ -90,7 +90,7 @@ class AddUserCommandTest extends KernelTestCase
      */
     private function assertUserCreated(bool $isAdmin)
     {
-        $container = self::$kernel->getContainer();
+        $container = self::getContainer();
 
         /** @var User $user */
         $user = $container->get('doctrine')->getRepository(User::class)->findOneByEmail($this->userData['email']);
@@ -98,7 +98,7 @@ class AddUserCommandTest extends KernelTestCase
 
         $this->assertSame($this->userData['full-name'], $user->getFullName());
         $this->assertSame($this->userData['username'], $user->getUsername());
-        $this->assertTrue($container->get('security.password_encoder')->isPasswordValid($user, $this->userData['password']));
+        $this->assertTrue($container->get('security.password_hasher')->isPasswordValid($user, $this->userData['password']));
         $this->assertSame($isAdmin ? ['ROLE_ADMIN'] : ['ROLE_USER'], $user->getRoles());
     }
 
@@ -114,7 +114,7 @@ class AddUserCommandTest extends KernelTestCase
         self::bootKernel();
 
         // this uses a special testing container that allows you to fetch private services
-        $command = self::$container->get(AddUserCommand::class);
+        $command = self::getContainer()->get(AddUserCommand::class);
         $command->setApplication(new Application(self::$kernel));
 
         $commandTester = new CommandTester($command);

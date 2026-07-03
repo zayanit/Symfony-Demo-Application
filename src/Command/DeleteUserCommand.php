@@ -15,6 +15,7 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use App\Utils\Validator;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -39,10 +40,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Oleg Voronkovich <oleg-voronkovich@yandex.ru>
  */
+#[AsCommand(name: 'app:delete-user', description: 'Deletes users from the database')]
 class DeleteUserCommand extends Command
 {
-    protected static $defaultName = 'app:delete-user';
-
     /** @var SymfonyStyle */
     private $io;
     private $entityManager;
@@ -87,7 +87,7 @@ HELP
         $this->io = new SymfonyStyle($input, $output);
     }
 
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         if (null !== $input->getArgument('username')) {
             return;
@@ -108,7 +108,7 @@ HELP
         $input->setArgument('username', $username);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $username = $this->validator->validateUsername($input->getArgument('username'));
 
@@ -128,5 +128,7 @@ HELP
         $this->entityManager->flush();
 
         $this->io->success(sprintf('User "%s" (ID: %d, email: %s) was successfully deleted.', $user->getUsername(), $userId, $user->getEmail()));
+
+        return Command::SUCCESS;
     }
 }

@@ -7,8 +7,9 @@ to develop applications following the [Symfony Best Practices][1].
 Requirements
 ------------
 
-  * PHP 7.1.3 or higher;
+  * PHP 8.1 or higher;
   * PDO-SQLite PHP extension enabled;
+  * Node.js 18 or higher (for building frontend assets);
   * and the [usual Symfony application requirements][2].
 
 Installation
@@ -38,7 +39,7 @@ $ cd my_project/
 $ symfony serve
 ```
 
-If you don't have the Symfony client installed, run `php bin/console server:run`.
+If you don't have the Symfony client installed, run `php -S localhost:8000 -t public`.
 Alternatively, you can [configure a web server][3] like Nginx or Apache to run
 the application.
 
