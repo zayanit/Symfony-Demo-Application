@@ -1,19 +1,19 @@
 security:
-    encoders:
-        # Our user class and the algorithm we'll use to encode passwords
+    password_hashers:
+        # Our user class and the algorithm we'll use to hash passwords
         # 'auto' means to let Symfony choose the best possible password hasher (Argon2 or Bcrypt)
-        # https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
+        # https://symfony.com/doc/current/security.html#configuring-password-hashing-algorithms
         App\Entity\User: 'auto'
 
     providers:
-        # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+        # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
         # In this example, users are stored via Doctrine in the database
         # To see the users at src/App/DataFixtures/ORM/LoadFixtures.php
         # To load users from somewhere else: https://symfony.com/doc/current/security/custom_provider.html
         database_users:
             entity: { class: App\Entity\User, property: username }
 
-    # https://symfony.com/doc/current/security.html#initial-security-yml-setup-authentication
+    # https://symfony.com/doc/current/security.html#the-firewall
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -22,10 +22,7 @@ security:
         main:
             # this firewall applies to all URLs
             pattern: ^/
-
-            # but the firewall does not require login on every page
-            # denying access is done in access_control or in your controllers
-            anonymous: true
+            provider: database_users
 
             # This allows the user to login by submitting a username and password
             # Reference: https://symfony.com/doc/current/security/form_login_setup.html
@@ -36,8 +33,8 @@ security:
                 # When the user tries to access a protected page, they are redirected here
                 login_path: security_login
                 # Secure the login form against CSRF
-                # Reference: https://symfony.com/doc/current/security/csrf_in_login_form.html
-                csrf_token_generator: security.csrf.token_manager
+                # Reference: https://symfony.com/doc/current/security/csrf.html#protecting-login-forms
+                enable_csrf: true
                 # The page users are redirect to when there is no previous page stored in the
                 # session (for example when the users access directly to the login page).
                 default_target_path: blog_index

@@ -4,3 +4,4 @@ security:
     firewalls:
         main:
             http_basic: ~
+            entry_point: form_login
