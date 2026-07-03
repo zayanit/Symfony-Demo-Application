@@ -13,12 +13,15 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 /**
  * A console command that lists all the existing users.
@@ -34,16 +37,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  *
  * @author Javier Eguiluz <javier.eguiluz@gmail.com>
  */
+#[AsCommand(name: 'app:list-users', description: 'Lists all the existing users')]
 class ListUsersCommand extends Command
 {
-    // a good practice is to use the 'app:' prefix to group all your custom application commands
-    protected static $defaultName = 'app:list-users';
-
     private $mailer;
     private $emailSender;
     private $users;
 
-    public function __construct(\Swift_Mailer $mailer, $emailSender, UserRepository $users)
+    public function __construct(MailerInterface $mailer, $emailSender, UserRepository $users)
     {
         parent::__construct();
 
@@ -87,7 +88,7 @@ HELP
      * This method is executed after initialize(). It usually contains the logic
      * to execute to complete this command task.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $maxResults = $input->getOption('max-results');
         // Use ->findBy() instead of ->findAll() to allow result sorting and limiting
@@ -123,6 +124,8 @@ HELP
         if (null !== $email = $input->getOption('send-to')) {
             $this->sendReport($usersAsATable, $email);
         }
+
+        return Command::SUCCESS;
     }
 
     /**
@@ -130,14 +133,14 @@ HELP
      */
     private function sendReport(string $contents, string $recipient): void
     {
-        // See https://symfony.com/doc/current/email.html
-        $message = $this->mailer->createMessage()
-            ->setSubject(sprintf('app:list-users report (%s)', date('Y-m-d H:i:s')))
-            ->setFrom($this->emailSender)
-            ->setTo($recipient)
-            ->setBody($contents, 'text/plain')
+        // See https://symfony.com/doc/current/mailer.html#creating-sending-messages
+        $email = (new Email())
+            ->subject(sprintf('app:list-users report (%s)', date('Y-m-d H:i:s')))
+            ->from($this->emailSender)
+            ->to($recipient)
+            ->text($contents)
         ;
 
-        $this->mailer->send($message);
+        $this->mailer->send($email);
     }
 }
