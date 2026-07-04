@@ -92,17 +92,26 @@ class BlogControllerTest extends WebTestCase
             'post[title]' => $postTitle,
             'post[summary]' => $postSummary,
             'post[content]' => $postContent,
+            'post[publishedAt]' => '2020-01-15T10:30:00',
+            // includes a brand-new tag name (not part of the existing whitelist)
+            // to also exercise TagArrayToStringTransformer's tag-creation path
+            'post[tags]' => 'lorem,new-test-tag',
         ]);
         $client->submit($form);
 
         $this->assertSame(Response::HTTP_FOUND, $client->getResponse()->getStatusCode());
 
+        /** @var Post $post */
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->findOneBy([
             'title' => $postTitle,
         ]);
         $this->assertNotNull($post);
         $this->assertSame($postSummary, $post->getSummary());
         $this->assertSame($postContent, $post->getContent());
+        $this->assertSame('2020-01-15 10:30:00', $post->getPublishedAt()->format('Y-m-d H:i:s'));
+        $this->assertSame(['lorem', 'new-test-tag'], array_values(array_map(function ($tag) {
+            return $tag->getName();
+        }, $post->getTags()->toArray())));
     }
 
     public function testAdminShowPost()
@@ -133,6 +142,8 @@ class BlogControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/en/admin/post/1/edit');
         $form = $crawler->selectButton('Save changes')->form([
             'post[title]' => $newBlogPostTitle,
+            'post[publishedAt]' => '2021-06-20T08:15:30',
+            'post[tags]' => 'edited-tag',
         ]);
         $client->submit($form);
 
@@ -141,6 +152,10 @@ class BlogControllerTest extends WebTestCase
         /** @var Post $post */
         $post = $client->getContainer()->get('doctrine')->getRepository(Post::class)->find(1);
         $this->assertSame($newBlogPostTitle, $post->getTitle());
+        $this->assertSame('2021-06-20 08:15:30', $post->getPublishedAt()->format('Y-m-d H:i:s'));
+        $this->assertSame(['edited-tag'], array_values(array_map(function ($tag) {
+            return $tag->getName();
+        }, $post->getTags()->toArray())));
     }
 
     /**
