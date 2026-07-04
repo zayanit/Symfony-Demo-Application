@@ -12,34 +12,34 @@
 namespace App\Utils;
 
 /**
- * This class is used to convert PHP date format to moment.js format.
+ * This class is used to convert PHP date format to flatpickr format.
  *
  * @author Yonel Ceruto <yonelceruto@gmail.com>
  */
-class MomentFormatConverter
+class FlatpickrFormatConverter
 {
     /**
-     * This defines the mapping between PHP ICU date format (key) and moment.js date format (value)
+     * This defines the mapping between PHP ICU date format (key) and flatpickr date format (value)
      * For ICU formats see http://userguide.icu-project.org/formatparse/datetime#TOC-Date-Time-Format-Syntax
-     * For Moment formats see http://momentjs.com/docs/#/displaying/format/.
+     * For flatpickr formats see https://flatpickr.js.org/formatting/.
      *
      * @var array
      */
     private static $formatConvertRules = [
         // year
-        'yyyy' => 'YYYY', 'yy' => 'YY', 'y' => 'YYYY',
+        'yyyy' => 'Y', 'yy' => 'y', 'y' => 'Y',
+        // month
+        'MM' => 'm',
         // day
-        'dd' => 'DD', 'd' => 'D',
-        // day of week
-        'EE' => 'ddd', 'EEEEEE' => 'dd',
-        // timezone
-        'ZZZZZ' => 'Z', 'ZZZ' => 'ZZ',
+        'dd' => 'd', 'd' => 'j',
+        // hour, minute, second
+        'HH' => 'H', 'mm' => 'i', 'ss' => 'S',
         // letter 'T'
         '\'T\'' => 'T',
     ];
 
     /**
-     * Returns associated moment.js format.
+     * Returns associated flatpickr format.
      */
     public function convert(string $format): string
     {

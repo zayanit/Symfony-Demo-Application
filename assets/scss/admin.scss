@@ -1,6 +1,10 @@
 @import "~bootswatch/flatly/variables";
-@import "~eonasdan-bootstrap-datetimepicker/src/sass/bootstrap-datetimepicker-build.scss";
-@import "bootstrap-tagsinput.scss";
+
+/* Tag input (Tagify) validation error state
+   ------------------------------------------------------------------------- */
+.has-error .tagify {
+  border-color: #e74c3c;
+}
 
 /* Page: 'Backend post index'
    ------------------------------------------------------------------------- */

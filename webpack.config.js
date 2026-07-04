@@ -11,10 +11,6 @@ Encore
     .setPublicPath('/build')
     .cleanupOutputBeforeBuild()
     .autoProvidejQuery()
-    .autoProvideVariables({
-        "window.Bloodhound": require.resolve('bloodhound-js'),
-        "jQuery.tagsinput": "bootstrap-tagsinput"
-    })
     .enableSassLoader()
     // when versioning is enabled, each filename will include a hash that changes
     // whenever the contents of that file change. This allows you to use aggressive

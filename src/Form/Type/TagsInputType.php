@@ -22,7 +22,7 @@ use Symfony\Component\Form\FormView;
 
 /**
  * Defines the custom form field type used to manipulate tags values across
- * Bootstrap-tagsinput javascript plugin.
+ * the Tagify javascript plugin.
  *
  * See https://symfony.com/doc/current/cookbook/form/create_custom_field_type.html
  *
