@@ -17,7 +17,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 /**
  * This data transformer is used to translate the array of tags into a comma separated format
- * that can be displayed and managed by Bootstrap-tagsinput js plugin (and back on submit).
+ * that can be displayed and managed by the Tagify js plugin (and back on submit).
  *
  * See https://symfony.com/doc/current/form/data_transformers.html
  *
