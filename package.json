@@ -21,6 +21,12 @@
   "license": "UNLICENSED",
   "private": true,
   "resolutions": {
+    "fast-uri": "^3.1.5",
+    "@symfony/webpack-encore/clean-webpack-plugin/del/@types/minimatch/brace-expansion": "^5.0.9",
+    "nanoid": "^3.3.17",
+    "svgo": "^3.3.4",
+    "postcss": "^8.5.23",
+    "body-parser": "^1.20.6",
     "webpack-dev-server": "^5.2.5",
     "serialize-javascript": "^7.0.5",
     "uuid": "^11.1.1"
